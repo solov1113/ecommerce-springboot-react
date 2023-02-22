@@ -21,7 +21,9 @@
 	<modules>
 		<module>discovery-server</module>
 		<module>api-gateway</module>
-	</modules>
+		<module>catalog-service</module>
+        <module>commons</module>
+    </modules>
 
 	<properties>
 		<java.version>19</java.version>
