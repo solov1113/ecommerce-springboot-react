@@ -1,8 +1,8 @@
 package h1r0ku.dto.request;
 
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
 
-@RequiredArgsConstructor
+@Data
 public class ProductRequest {
     private Double price;
     private Long categoryId;

@@ -2,13 +2,13 @@ package h1r0ku.dto.response;
 
 import h1r0ku.entity.Category;
 import h1r0ku.entity.Product;
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@RequiredArgsConstructor
+@Data
 public class CategoryResponse {
     private Long id;
     private String name;

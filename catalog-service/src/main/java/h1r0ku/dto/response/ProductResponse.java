@@ -1,10 +1,10 @@
 package h1r0ku.dto.response;
 
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@RequiredArgsConstructor
+@Data
 public class ProductResponse {
     private Long id;
     private Double price;
