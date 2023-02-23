@@ -23,6 +23,7 @@
 		<module>api-gateway</module>
 		<module>catalog-service</module>
         <module>commons</module>
+        <module>image-service</module>
     </modules>
 
 	<properties>
