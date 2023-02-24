@@ -24,6 +24,9 @@
 		<module>catalog-service</module>
         <module>commons</module>
         <module>image-service</module>
+        <module>customer-service</module>
+        <module>auth-service</module>
+        <module>order-service</module>
     </modules>
 
 	<properties>
