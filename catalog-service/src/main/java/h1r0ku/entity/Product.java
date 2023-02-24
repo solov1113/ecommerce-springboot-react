@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,8 +22,17 @@ public class Product {
     @Column(name = "id")
     private Long id;
 
+    @Column (name = "product_name")
+    private String productName;
+
+    @Column (name = "description")
+    private String description;
+
     @Column(name = "price")
-    private Double price;
+    private BigDecimal price;
+
+    @Column(name = "quantity")
+    private Integer quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
