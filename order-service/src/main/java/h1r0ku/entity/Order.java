@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "customer")
+@Table(name = "orders")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -47,4 +47,8 @@ public class Order {
     @UpdateTimestamp
     @Column(name = "updatedAt")
     private LocalDateTime updatedAt;
+
+    public void increaseOrderFee(BigDecimal value) {
+        setOrderFee(this.orderFee.add(value));
+    }
 }
