@@ -1,10 +1,12 @@
 package h1r0ku.mapper;
 
+import feign.FeignException;
 import h1r0ku.dto.request.OrderRequest;
+import h1r0ku.dto.response.CustomerResponse;
 import h1r0ku.dto.response.OrderItemResponse;
 import h1r0ku.dto.response.OrderResponse;
 import h1r0ku.entity.Order;
-import h1r0ku.entity.OrderItem;
+import h1r0ku.exceptions.NotFoundException;
 import h1r0ku.feign.CustomerClient;
 import h1r0ku.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,12 @@ public class OrderMapper {
 
     public OrderResponse create(OrderRequest orderRequest) {
         Order order = basicMapper.convertTo(orderRequest, Order.class);
+        try {
+            CustomerResponse customerResponse = customerClient.getById(order.getCustomerId()).getBody();
+            order.setCustomerId(customerResponse.getId());
+        } catch (FeignException.NotFound e) {
+            throw new NotFoundException(e.getMessage());
+        }
         return basicMapper.convertTo(orderService.create(order), OrderResponse.class);
     }
     public Page<OrderResponse> getAll(Pageable pageable) {
