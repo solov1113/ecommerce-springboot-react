@@ -109,15 +109,16 @@ public class OrderController {
 
 //  Order items
 
-    @PostMapping("/items")
+    @PostMapping("/{orderId}/items")
     @Operation(summary = "Create a new order item", description = "Create a new order item")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Order item created"),
             @ApiResponse(responseCode = "400", description = "Bad request"),
             @ApiResponse(responseCode = "500", description = "Internal server error occurred")
     })
-    public ResponseEntity<OrderItemResponse> createOrderItem(@RequestBody OrderItemRequest orderItemRequest) {
-        return ResponseEntity.ok(orderItemMapper.create(orderItemRequest));
+    public ResponseEntity<OrderResponse> createOrderItem(@PathVariable("orderId") Long orderId,
+                                                             @RequestBody OrderItemRequest orderItemRequest) {
+        return ResponseEntity.ok(orderItemMapper.create(orderId, orderItemRequest));
     }
 
     @PutMapping("/items/{id}")
