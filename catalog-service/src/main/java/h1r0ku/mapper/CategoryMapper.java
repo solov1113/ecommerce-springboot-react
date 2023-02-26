@@ -1,8 +1,8 @@
 package h1r0ku.mapper;
 
 import h1r0ku.dto.request.CategoryRequest;
-import h1r0ku.dto.response.CategoryResponse;
-import h1r0ku.dto.response.ProductResponse;
+import h1r0ku.dto.catalog.category.CategoryResponse;
+import h1r0ku.dto.catalog.product.ProductResponse;
 import h1r0ku.entity.Category;
 import h1r0ku.service.CategoryService;
 import lombok.RequiredArgsConstructor;

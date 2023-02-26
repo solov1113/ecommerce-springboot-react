@@ -1,7 +1,6 @@
-package h1r0ku.dto.response;
+package h1r0ku.dto.catalog.category;
 
-import h1r0ku.entity.Category;
-import h1r0ku.entity.Product;
+import h1r0ku.dto.catalog.product.ProductResponse;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -12,9 +11,9 @@ import java.util.Set;
 public class CategoryResponse {
     private Long id;
     private String name;
-    private Set<Category> childCategories = new HashSet<>();
-    private Category parentCategory;
-    private Set<Product> products = new HashSet<>();
+    private Set<CategoryResponse> childCategories = new HashSet<>();
+    private CategoryResponse parentCategory;
+    private Set<ProductResponse> products = new HashSet<>();
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

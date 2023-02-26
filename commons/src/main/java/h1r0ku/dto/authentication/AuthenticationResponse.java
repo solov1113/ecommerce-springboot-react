@@ -1,4 +1,4 @@
-package h1r0ku.dto.response;
+package h1r0ku.dto.authentication;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

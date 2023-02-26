@@ -1,4 +1,4 @@
-package h1r0ku.dto.response;
+package h1r0ku.dto;
 
 import lombok.Data;
 import org.springframework.http.HttpStatus;

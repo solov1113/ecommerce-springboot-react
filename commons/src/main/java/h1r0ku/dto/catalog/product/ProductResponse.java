@@ -1,5 +1,6 @@
-package h1r0ku.dto.response;
+package h1r0ku.dto.catalog.product;
 
+import h1r0ku.dto.catalog.category.CategoryResponse;
 import lombok.Data;
 
 import java.math.BigDecimal;

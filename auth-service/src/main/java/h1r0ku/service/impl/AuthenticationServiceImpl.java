@@ -1,7 +1,7 @@
 package h1r0ku.service.impl;
 
-import h1r0ku.dto.request.AuthenticationRequest;
-import h1r0ku.dto.response.AuthenticationResponse;
+import h1r0ku.dto.authentication.AuthenticationRequest;
+import h1r0ku.dto.authentication.AuthenticationResponse;
 import h1r0ku.service.AuthenticationService;
 import h1r0ku.service.JwtService;
 import lombok.RequiredArgsConstructor;

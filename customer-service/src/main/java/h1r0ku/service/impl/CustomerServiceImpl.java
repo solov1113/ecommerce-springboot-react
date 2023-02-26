@@ -1,7 +1,8 @@
 package h1r0ku.service.impl;
 
-import h1r0ku.dto.request.AuthenticationRequest;
+import h1r0ku.dto.authentication.AuthenticationRequest;
 import h1r0ku.entity.Customer;
+import h1r0ku.exceptions.NotFoundException;
 import h1r0ku.feign.AuthClient;
 import h1r0ku.repository.CustomerRepository;
 import h1r0ku.service.CustomerService;
@@ -33,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer getById(Long id) {
-        return customerRepository.findById(id).orElseThrow();
+        return customerRepository.findById(id).orElseThrow(() -> new NotFoundException("Customer not found"));
     }
 
     @Override

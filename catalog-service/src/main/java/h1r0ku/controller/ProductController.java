@@ -1,7 +1,7 @@
 package h1r0ku.controller;
 
 import h1r0ku.dto.request.ProductRequest;
-import h1r0ku.dto.response.ProductResponse;
+import h1r0ku.dto.catalog.product.ProductResponse;
 import h1r0ku.mapper.ProductMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

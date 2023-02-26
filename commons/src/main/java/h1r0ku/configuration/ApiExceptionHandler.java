@@ -1,6 +1,6 @@
 package h1r0ku.configuration;
 
-import h1r0ku.dto.response.ErrorDetails;
+import h1r0ku.dto.ErrorDetails;
 import h1r0ku.exceptions.NotFoundException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
