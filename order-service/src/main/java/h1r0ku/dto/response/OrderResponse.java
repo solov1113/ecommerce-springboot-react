@@ -1,6 +1,6 @@
 package h1r0ku.dto.response;
 
-import h1r0ku.entity.OrderItem;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import h1r0ku.enums.OrderStatus;
 import lombok.Data;
 
@@ -15,7 +15,8 @@ public class OrderResponse {
     private String orderDescription;
     private BigDecimal orderFee;
     private OrderStatus orderStatus;
-    private List<OrderItem> orderItems;
+    @JsonIgnoreProperties("order")
+    private List<OrderItemResponse> orderItems;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
