@@ -1,0 +1,7 @@
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: api-gateway
+  config:
+    import: optional:configserver:http://localhost:8081
