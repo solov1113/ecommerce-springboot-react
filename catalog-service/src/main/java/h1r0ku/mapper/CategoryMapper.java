@@ -24,8 +24,9 @@ public class CategoryMapper {
     }
 
     public CategoryResponse createCategory(CategoryRequest categoryRequest) {
-        Category category = categoryService.create(basicMapper.convertTo(categoryRequest, Category.class));
-        return basicMapper.convertTo(category, CategoryResponse.class);
+        Category category = basicMapper.convertTo(categoryRequest, Category.class);
+        categoryService.setParentCategory(categoryRequest.getParentCategoryId(), category);
+        return basicMapper.convertTo(categoryService.create(category), CategoryResponse.class);
     }
 
     public CategoryResponse getById(Long id) {
@@ -37,7 +38,7 @@ public class CategoryMapper {
     }
 
     public CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest) {
-        Category category = categoryService.updateCategory(id, basicMapper.convertTo(categoryRequest, Category.class));
+        Category category = categoryService.updateCategory(id, categoryRequest.getParentCategoryId(), basicMapper.convertTo(categoryRequest, Category.class));
         return basicMapper.convertTo(category, CategoryResponse.class);
     }
 

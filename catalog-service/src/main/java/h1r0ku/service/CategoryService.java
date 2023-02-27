@@ -12,6 +12,7 @@ public interface CategoryService {
     List<Category> getAll();
     Category getCategoryById(Long id);
     Page<Product> getProductsByCategory(Long categoryId, Pageable pageable);
-    Category updateCategory(Long id, Category updatedCategory);
+    Category setParentCategory(Long parentId, Category category);
+    Category updateCategory(Long id, Long parentCategoryId, Category updatedCategory);
     void deleteCategory(Long id);
 }
