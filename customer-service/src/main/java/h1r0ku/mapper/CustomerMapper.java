@@ -18,7 +18,7 @@ public class CustomerMapper {
 
     public CustomerResponse registration(CustomerRequest customerRequest) {
         Customer customer = basicMapper.convertTo(customerRequest, Customer.class);
-        return basicMapper.convertTo(customerService.registration(customer), CustomerResponse.class);
+        return basicMapper.convertTo(customerService.registration(customer, customerRequest.getImage()), CustomerResponse.class);
     }
 
     public Page<CustomerResponse> getAll(Pageable pageable) {

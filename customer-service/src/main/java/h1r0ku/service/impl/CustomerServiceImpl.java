@@ -4,6 +4,7 @@ import h1r0ku.dto.authentication.AuthenticationRequest;
 import h1r0ku.entity.Customer;
 import h1r0ku.exceptions.NotFoundException;
 import h1r0ku.feign.AuthClient;
+import h1r0ku.feign.ImageClient;
 import h1r0ku.repository.CustomerRepository;
 import h1r0ku.service.CustomerService;
 import lombok.RequiredArgsConstructor;
@@ -11,19 +12,27 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
+    private final ImageClient imageClient;
     private final CustomerRepository customerRepository;
     private final AuthClient authClient;
 
+
     @Override
-    public Customer registration(Customer customer) {
-        customer.setPassword(new BCryptPasswordEncoder().encode(customer.getPassword()));
+    public Customer registration(Customer customer, MultipartFile image) {
+        String password = customer.getPassword();
+        customer.setPassword(new BCryptPasswordEncoder().encode(password));
+        if(image != null && !image.isEmpty()) {
+            String imageUrl = imageClient.uploadImage(image);
+            customer.setImageUrl(imageUrl);
+        }
         Customer c = customerRepository.save(customer);
-        authClient.authenticate(new AuthenticationRequest(c.getUsername(), c.getPassword()));
+        authClient.authenticate(new AuthenticationRequest(customer.getUsername(), password));
         return c;
     }
 

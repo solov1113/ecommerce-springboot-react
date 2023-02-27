@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +32,7 @@ public class CustomerController {
             @ApiResponse(responseCode = "409", description = "Customer already exists"),
             @ApiResponse(responseCode = "500", description = "Internal server error occurred")
     })
-    public ResponseEntity<CustomerResponse> registration(@RequestBody CustomerRequest customerRequest) {
+    public ResponseEntity<CustomerResponse> registration(@Valid @ModelAttribute CustomerRequest customerRequest) {
         return ResponseEntity.ok(customerMapper.registration(customerRequest));
     }
 
