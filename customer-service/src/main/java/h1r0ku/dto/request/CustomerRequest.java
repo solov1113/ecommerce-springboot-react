@@ -1,20 +1,19 @@
 package h1r0ku.dto.request;
 
 import h1r0ku.enums.CustomerRole;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import h1r0ku.validator.constraint.PasswordConstraint;
+import h1r0ku.validator.constraint.UsernameConstraint;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class CustomerRequest {
-    @Size(min = 3, max = 25, message = "Username must be between 3 and 20 characters")
-    @NotBlank(message = "Username value mustn't be null or whitespace")
+    @UsernameConstraint(message = "Username should be unique and be between 8 and 30 characters")
     private String username;
-    @Size(min = 3, max = 25, message = "Password must be between 3 and 20 characters")
-    @NotBlank(message = "Password value mustn't be null or whitespace")
+    @PasswordConstraint(message = "Your password must contain at least 8 characters, and include uppercase letters, lowercase letters and numbers.")
     private String password;
-    private CustomerRole role;
+    private CustomerRole role = CustomerRole.USER;
     private String firstName;
     private String lastName;
-    private String imageUrl;
+    private MultipartFile image;
 }
