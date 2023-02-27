@@ -24,6 +24,9 @@ public class Category {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "level")
+    private Integer level;
+
     @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Category> childCategories = new HashSet<>();
 
@@ -41,4 +44,13 @@ public class Category {
     @UpdateTimestamp
     @Column(name = "updatedAt")
     private LocalDateTime updatedAt;
+
+    public Category removeChild(Long childId) {
+        this.childCategories.removeIf(ch -> ch.getId().equals(childId));
+        return this;
+    }
+
+    public void removeProduct(Long productId) {
+        this.products.removeIf(p -> p.getId().equals(productId));
+    }
 }
