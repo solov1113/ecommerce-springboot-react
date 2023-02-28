@@ -1,13 +1,11 @@
 package h1r0ku.dto.request;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -21,6 +19,9 @@ public class ProductRequest {
     @Positive
     @Max(value = 10_000_000)
     private BigDecimal price;
+    @Positive
+    @Max(value = 10_000_000)
+    private Integer quantity;
     private Long categoryId;
-    private List<MultipartFile> images;
+    private List<MultipartFile> images = new ArrayList<>();
 }

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,10 +49,21 @@ public class ProductController {
     @Operation(summary = "Create a new product", description = "Creates a new product")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully created product"),
-            @ApiResponse(responseCode = "500", description = "Internal server error"),
             @ApiResponse(responseCode = "500", description = "Internal server error occurred")
     })
-    public ResponseEntity<ProductResponse> createProduct(@ModelAttribute ProductRequest productRequest) {
+    public ResponseEntity<ProductResponse> createProduct(@Valid @ModelAttribute ProductRequest productRequest) {
         return ResponseEntity.ok(productMapper.createProduct(productRequest));
+    }
+
+    @PutMapping(value = "/{productId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @Operation(summary = "Update product", description = "Update a product by its ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Product updated"),
+            @ApiResponse(responseCode = "404", description = "Category not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error occurred")
+    })
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable("productId") Long productId,
+                                                         @Valid @ModelAttribute ProductRequest productRequest) {
+        return ResponseEntity.ok(productMapper.updateProduct(productId, productRequest));
     }
 }

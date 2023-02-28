@@ -25,7 +25,12 @@ public class ProductMapper {
     }
 
     public ProductResponse createProduct(ProductRequest productRequest) {
-        Product product = productService.create(basicMapper.convertTo(productRequest, Product.class), productRequest.getImages());
+        Product product = productService.create(basicMapper.convertTo(productRequest, Product.class), productRequest.getImages(), productRequest.getCategoryId());
+        return basicMapper.convertTo(product, ProductResponse.class);
+    }
+
+    public ProductResponse updateProduct(Long productId, ProductRequest productRequest) {
+        Product product = productService.update(productId, basicMapper.convertTo(productRequest, Product.class), productRequest.getImages(), productRequest.getCategoryId());
         return basicMapper.convertTo(product, ProductResponse.class);
     }
 }
