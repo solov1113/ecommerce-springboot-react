@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +35,7 @@ public class OrderController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<OrderResponse> create(@RequestBody OrderRequest orderRequest) {
+    public ResponseEntity<OrderResponse> create(@Valid @RequestBody OrderRequest orderRequest) {
         return ResponseEntity.ok(orderMapper.create(orderRequest));
     }
 
@@ -92,7 +93,7 @@ public class OrderController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<OrderResponse> updateOrder(@PathVariable("id") Long id,
-                                                     @RequestBody OrderRequest orderRequest) {
+                                                     @Valid @RequestBody OrderRequest orderRequest) {
         return ResponseEntity.ok(orderMapper.updateOrder(id, orderRequest));
     }
 
@@ -117,7 +118,7 @@ public class OrderController {
             @ApiResponse(responseCode = "500", description = "Internal server error occurred")
     })
     public ResponseEntity<OrderResponse> createOrderItem(@PathVariable("orderId") Long orderId,
-                                                             @RequestBody OrderItemRequest orderItemRequest) {
+                                                         @Valid @RequestBody OrderItemRequest orderItemRequest) {
         return ResponseEntity.ok(orderItemMapper.create(orderId, orderItemRequest));
     }
 
@@ -130,7 +131,7 @@ public class OrderController {
             @ApiResponse(responseCode = "500", description = "Internal server error occurred")
     })
     public ResponseEntity<OrderItemResponse> updateOrderItem(@PathVariable("id") Long id,
-                                                             @RequestBody OrderItemRequest orderItemRequest) {
+                                                             @Valid @RequestBody OrderItemRequest orderItemRequest) {
         return ResponseEntity.ok(orderItemMapper.updateOrderItem(id, orderItemRequest));
     }
 
