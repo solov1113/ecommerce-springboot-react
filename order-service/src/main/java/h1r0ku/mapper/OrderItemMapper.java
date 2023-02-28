@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -32,14 +33,17 @@ public class OrderItemMapper {
         orderItem.setOrder(order);
         order.increaseOrderFee(product.getPrice().multiply(BigDecimal.valueOf(orderItemRequest.getQuantity())));
 
-        for(OrderItem item : order.getOrderItems()) {
-            if (item.getProductId().equals(productId)) {
-                item.setQuantity(item.getQuantity() + orderItem.getQuantity());
-                orderItemService.updateOrderItem(item.getId(), item);
-            }
+        Optional<OrderItem> existedItem = order.getOrderItems().stream().filter(oi -> oi.equals(productId)).findFirst();
+        if(existedItem.isPresent()) {
+            OrderItem item = existedItem.get();
+            item.setQuantity(item.getQuantity() + orderItem.getQuantity());
+            orderItemService.updateOrderItem(item.getId(), item);
+        } else {
+            orderItemService.create(orderItem);
         }
 
-        orderItemService.create(orderItem);
+
+
         Order updatedOrder = orderService.updateOrder(orderId, order);
         return basicMapper.convertTo(updatedOrder, OrderResponse.class);
     }
