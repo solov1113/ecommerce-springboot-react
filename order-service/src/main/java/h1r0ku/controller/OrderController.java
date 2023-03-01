@@ -105,6 +105,7 @@ public class OrderController {
             @ApiResponse(responseCode = "500", description = "Internal server error occurred")
     })
     public ResponseEntity<Void> deleteOrder(@PathVariable("id") Long id) {
+        orderMapper.deleteOrder(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -143,6 +144,7 @@ public class OrderController {
             @ApiResponse(responseCode = "500", description = "Internal server error occurred")
     })
     public ResponseEntity<Void> deleteOrderItem(@PathVariable("id") Long id) {
+        orderItemMapper.deleteOrderItem(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

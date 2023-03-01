@@ -3,6 +3,7 @@ package h1r0ku.service.impl;
 import h1r0ku.entity.Category;
 import h1r0ku.entity.Product;
 import h1r0ku.entity.ProductImage;
+import h1r0ku.exceptions.NotFoundException;
 import h1r0ku.feign.ImageClient;
 import h1r0ku.repository.ProductImageRepository;
 import h1r0ku.repository.ProductRepository;
@@ -68,6 +69,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getById(Long productId) {
-        return productRepository.findById(productId).orElseThrow();
+        return productRepository.findById(productId).orElseThrow(() -> new NotFoundException("Product not found"));
     }
 }

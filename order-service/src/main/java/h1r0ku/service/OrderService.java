@@ -5,6 +5,7 @@ import h1r0ku.entity.OrderItem;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface OrderService {
@@ -13,6 +14,7 @@ public interface OrderService {
     Order getOrderById(Long id);
     Page<OrderItem> getOrderItemsByOrder(Long orderId, Pageable pageable);
     Page<Order> getOrdersByUser(Long userId, Pageable pageable);
-    Order updateOrder(Long id, Order updatedOrder);
+    Order updateOrder(Long orderId, Order updatedOrder);
+    Order addItem(Long orderId, OrderItem orderItem, BigDecimal productPrice, Long productId);
     void deleteOrder(Long id);
 }

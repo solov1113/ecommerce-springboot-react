@@ -27,24 +27,8 @@ public class OrderItemMapper {
     public OrderResponse create(Long orderId, OrderItemRequest orderItemRequest) {
         Long productId = orderItemRequest.getProductId();
         ProductResponse product = productClient.getProductById(productId).getBody();
-
         OrderItem orderItem = basicMapper.convertTo(orderItemRequest, OrderItem.class);
-        Order order = orderService.getOrderById(orderId);
-        orderItem.setOrder(order);
-        order.increaseOrderFee(product.getPrice().multiply(BigDecimal.valueOf(orderItemRequest.getQuantity())));
-
-        Optional<OrderItem> existedItem = order.getOrderItems().stream().filter(oi -> oi.equals(productId)).findFirst();
-        if(existedItem.isPresent()) {
-            OrderItem item = existedItem.get();
-            item.setQuantity(item.getQuantity() + orderItem.getQuantity());
-            orderItemService.updateOrderItem(item.getId(), item);
-        } else {
-            orderItemService.create(orderItem);
-        }
-
-
-
-        Order updatedOrder = orderService.updateOrder(orderId, order);
+        Order updatedOrder = orderService.addItem(orderId, orderItem, product.getPrice(), productId);
         return basicMapper.convertTo(updatedOrder, OrderResponse.class);
     }
 
@@ -53,7 +37,7 @@ public class OrderItemMapper {
         return basicMapper.convertTo(orderItemService.updateOrderItem(id, orderItem), OrderItemResponse.class);
     }
 
-    void deleteOrderItem(Long id) {
+    public void deleteOrderItem(Long id) {
         orderItemService.deleteOrderItem(id);
     }
 }
