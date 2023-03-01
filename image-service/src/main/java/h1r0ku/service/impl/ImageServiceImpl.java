@@ -32,7 +32,6 @@ public class ImageServiceImpl implements ImageService {
         Credentials credentials = GoogleCredentials.fromStream(serviceAccount.getInputStream());
         Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
         storage.create(blobInfo, file.getBytes());
-        System.out.println(fileName);
         return String.format(imageUrl, fileName);
     }
 }
