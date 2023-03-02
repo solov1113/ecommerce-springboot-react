@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+
+/image-service/src/main/resources/firebase.json
