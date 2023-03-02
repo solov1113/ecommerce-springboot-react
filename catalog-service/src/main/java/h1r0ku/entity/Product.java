@@ -38,8 +38,19 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private List<Review> reviews;
+
     @OneToMany(mappedBy = "product")
     private List<ProductImage> images;
+    @Column(name = "average_start")
+    private Float averageStar;
+
+    @Column(name = "reviews_count")
+    private Integer reviewsCount;
+
+    @Column(name = "orders_count")
+    private Integer ordersCount;
 
     @CreationTimestamp
     @Column(name = "createdAt")

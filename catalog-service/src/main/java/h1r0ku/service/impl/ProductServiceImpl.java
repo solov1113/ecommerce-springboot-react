@@ -21,10 +21,23 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
+    private static final int MIN_REVIEWS = 10;
+    private static final int NORMALIZATION_FACTOR = 100;
+
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
     private final CategoryService categoryService;
     private final ImageClient imageClient;
+
+    private static double calculatePopularityScore(Product product) {
+        Float avgRating = product.getAverageStar();
+        Integer numReviews = product.getReviewsCount();
+
+        double score = (MIN_REVIEWS / (MIN_REVIEWS + (float)numReviews)) * avgRating
+                + (numReviews / (MIN_REVIEWS + (float)numReviews)) * NORMALIZATION_FACTOR;
+
+        return score;
+    }
 
     private void uploadProductImage(List<MultipartFile> images, Product product) {
         if(images.size() > 0) {
