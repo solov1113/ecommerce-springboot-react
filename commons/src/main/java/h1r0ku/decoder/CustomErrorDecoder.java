@@ -3,7 +3,6 @@ package h1r0ku.decoder;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import h1r0ku.exceptions.RestApiException;
-import org.springframework.http.HttpStatus;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -26,13 +25,11 @@ public class CustomErrorDecoder implements ErrorDecoder {
     public Exception decode(String methodKey, Response response) {
         String message;
         Response.Body responseBody = response.body();
-        HttpStatus responseStatus = HttpStatus.valueOf(response.status());
         try {
             message = getStringFromStream(responseBody.asInputStream());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return new RestApiException(message, responseStatus);
-
+        return new RestApiException(message);
     }
 }
