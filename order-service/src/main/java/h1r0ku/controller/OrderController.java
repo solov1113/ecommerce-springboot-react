@@ -72,8 +72,8 @@ public class OrderController {
         return ResponseEntity.ok(orderMapper.getOrderItemsByOrder(id, pageable));
     }
 
-    @GetMapping("/user/{id}")
-    @Operation(summary = "Get Orders by User ID", description = "Retrieve all orders belonging to a user")
+    @GetMapping("/customer/{id}")
+    @Operation(summary = "Get Orders by Customer ID", description = "Retrieve all orders belonging to a customer")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Orders retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "User not found"),
@@ -81,7 +81,7 @@ public class OrderController {
     })
     public ResponseEntity<Page<OrderResponse>> getOrdersByUser(@PathVariable("id") Long id,
                                                                @PageableDefault Pageable pageable) {
-        return ResponseEntity.ok(orderMapper.getOrdersByUser(id, pageable));
+        return ResponseEntity.ok(orderMapper.getOrdersByCustomer(id, pageable));
     }
 
     @PutMapping("/{id}")

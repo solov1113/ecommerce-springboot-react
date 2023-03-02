@@ -13,7 +13,7 @@ public interface OrderService {
     Page<Order> getAll(Pageable pageable);
     Order getOrderById(Long id);
     Page<OrderItem> getOrderItemsByOrder(Long orderId, Pageable pageable);
-    Page<Order> getOrdersByUser(Long userId, Pageable pageable);
+    Page<Order> getOrdersByCustomer(Long customerId, Pageable pageable);
     Order updateOrder(Long orderId, Order updatedOrder);
     Order addItem(Long orderId, OrderItem orderItem, BigDecimal productPrice, Long productId);
     void deleteOrder(Long id);

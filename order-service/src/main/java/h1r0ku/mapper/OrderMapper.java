@@ -42,9 +42,8 @@ public class OrderMapper {
         return orderService.getOrderItemsByOrder(orderId, pageable)
                 .map(orderItem -> basicMapper.convertTo(orderItem, OrderItemResponse.class));
     }
-    public Page<OrderResponse> getOrdersByUser(Long userId, Pageable pageable) {
-        orderService.getOrdersByUser(userId, pageable).map(order -> basicMapper.convertTo(order, OrderResponse.class));
-        return null;
+    public Page<OrderResponse> getOrdersByCustomer(Long customerId, Pageable pageable) {
+        return orderService.getOrdersByCustomer(customerId, pageable).map(order -> basicMapper.convertTo(order, OrderResponse.class));
     }
     public OrderResponse updateOrder(Long id, OrderRequest updatedOrder) {
         Order order = basicMapper.convertTo(updatedOrder, Order.class);
