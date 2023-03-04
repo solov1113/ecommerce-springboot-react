@@ -12,7 +12,7 @@ public class CustomerRequest {
     private String username;
     @PasswordConstraint(message = "Your password must contain at least 8 characters, and include uppercase letters, lowercase letters and numbers.")
     private String password;
-    private CustomerRole role = CustomerRole.USER;
+    private CustomerRole role;
     private String firstName;
     private String lastName;
     private MultipartFile image;

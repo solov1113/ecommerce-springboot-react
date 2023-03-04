@@ -13,6 +13,8 @@ public class PathConstants {
 
     public static final String API_V1_ORDER = API_V1 + "/orders";
 
+    public static final String API_V1_CART = API_V1 + "/carts";
+
     public static final String API_V1_AUTH = API_V1 + "/auth";
 
 }

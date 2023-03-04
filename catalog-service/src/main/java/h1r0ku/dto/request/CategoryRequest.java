@@ -9,5 +9,5 @@ public class CategoryRequest {
     @Size(min = 3, max = 25, message = "Name must be between 3 and 30 characters")
     @NotBlank(message = "Name value mustn't be null or whitespace")
     private String name;
-    private Long parentCategoryId = null;
+    private Long parentCategoryId;
 }

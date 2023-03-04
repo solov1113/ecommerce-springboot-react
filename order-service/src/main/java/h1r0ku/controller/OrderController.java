@@ -1,6 +1,5 @@
 package h1r0ku.controller;
 
-import h1r0ku.dto.request.OrderItemRequest;
 import h1r0ku.dto.request.OrderRequest;
 import h1r0ku.dto.response.OrderItemResponse;
 import h1r0ku.dto.response.OrderResponse;
@@ -110,31 +109,6 @@ public class OrderController {
     }
 
 //  Order items
-
-    @PostMapping("/{orderId}/items")
-    @Operation(summary = "Create a new order item", description = "Create a new order item")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Order item created"),
-            @ApiResponse(responseCode = "400", description = "Bad request"),
-            @ApiResponse(responseCode = "500", description = "Internal server error occurred")
-    })
-    public ResponseEntity<OrderResponse> createOrderItem(@PathVariable("orderId") Long orderId,
-                                                         @Valid @RequestBody OrderItemRequest orderItemRequest) {
-        return ResponseEntity.ok(orderItemMapper.create(orderId, orderItemRequest));
-    }
-
-    @PutMapping("/items/{id}")
-    @Operation(summary = "Update an order item by id", description = "Update an order item by its ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Order item updated"),
-            @ApiResponse(responseCode = "400", description = "Bad request"),
-            @ApiResponse(responseCode = "404", description = "Order item not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error occurred")
-    })
-    public ResponseEntity<OrderItemResponse> updateOrderItem(@PathVariable("id") Long id,
-                                                             @Valid @RequestBody OrderItemRequest orderItemRequest) {
-        return ResponseEntity.ok(orderItemMapper.updateOrderItem(id, orderItemRequest));
-    }
 
     @DeleteMapping("/items/{id}")
     @Operation(summary = "Delete an order item by id", description = "Delete an order item by its ID")

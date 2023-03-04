@@ -29,7 +29,7 @@ public class Customer {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private CustomerRole role;
+    private CustomerRole role = CustomerRole.USER;
 
     @Column(name = "first_name")
     private String firstName;

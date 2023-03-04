@@ -5,7 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.naming.Name;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,11 +22,14 @@ public class OrderItem {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "product_id")
+    private Long productId;
+
     @Column(name = "quantity")
     private Integer quantity;
 
-    @Column(name = "product_id")
-    private Long productId;
+    @Column(name = "price")
+    private BigDecimal price;
 
     @ManyToOne
     @JoinColumn(name = "order_id")

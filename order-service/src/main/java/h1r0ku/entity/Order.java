@@ -8,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,16 +30,17 @@ public class Order {
 
     @Column(name = "order_status")
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
+    private OrderStatus orderStatus = OrderStatus.PENDING;
 
     @Column(name = "order_description")
     private String orderDescription;
 
-    @Column(name = "order_fee")
-    private BigDecimal orderFee;
+    @Column(name = "total_price")
+    private BigDecimal totalPrice = new BigDecimal(0);
 
+//    add tax discount
     @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItems;
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     @CreationTimestamp
     @Column(name = "createdAt")
@@ -48,7 +50,16 @@ public class Order {
     @Column(name = "updatedAt")
     private LocalDateTime updatedAt;
 
-    public void increaseOrderFee(BigDecimal value) {
-        setOrderFee(this.orderFee.add(value));
+    public void increaseTotalPrice(BigDecimal value) {
+        setTotalPrice(this.totalPrice.add(value));
     }
+
+    public void addItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+    }
+
+    public void removeItem(Long itemId) {
+        this.orderItems.removeIf(item -> item.getId().equals(itemId));
+    }
+
 }
