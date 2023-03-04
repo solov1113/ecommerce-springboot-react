@@ -1,4 +1,4 @@
-# Ecommerce REST API
+# Ecommerce
 
 This is an ecommerce REST API built using Java and Spring Boot. The API provides functionality for managing products, orders, and customers. The API uses JSON Web Tokens (JWT) for authentication and authorization.
 
@@ -46,10 +46,8 @@ The `customer-service` service manages information about customers who have regi
 
 The following technologies were used to build this API:
 
-- Spring Cloud
-- Eureka Server (and Client)
-- Spring Cloud Config Server
-- Spring Cloud Starter OpenFeign
+- Spring Cloud (Config, OpenFeign, Eureka)
+- JPA / Hibernate
 - Springdocv2
 - Java version 19
 - Spring Boot version 3.0.2
