@@ -10,6 +10,8 @@ import java.util.List;
 public interface ProductService {
     Product create(Product product, List<MultipartFile> images, Long categoryId);
     Product update(Long productId, Product product, List<MultipartFile> images, Long categoryId);
+    Product update(Product product);
+    void updateOrderCount(Long productId, boolean increase);
     Page<Product> getAll(Pageable pageable);
     Product getById(Long productId);
 }

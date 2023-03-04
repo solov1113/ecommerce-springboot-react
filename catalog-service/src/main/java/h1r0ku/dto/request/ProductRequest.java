@@ -1,5 +1,6 @@
 package h1r0ku.dto.request;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,10 +19,14 @@ public class ProductRequest {
     private String description;
     @Positive
     @Max(value = 10_000_000)
+    @NotNull
     private BigDecimal price;
     @Positive
     @Max(value = 10_000_000)
+    @NotNull
     private Integer quantity;
     private Long categoryId;
-    private List<MultipartFile> images = new ArrayList<>();
+    private Float averageStar = 0.0f;
+    private Integer ordersCount = 0;
+    private List<MultipartFile> images;
 }

@@ -14,5 +14,6 @@ public class ReviewRequest {
     @Positive
     @Min(value = 1)
     @Max(value = 5)
+    @NotNull
     private Short rating;
 }

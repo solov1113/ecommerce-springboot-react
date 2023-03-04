@@ -3,6 +3,7 @@ package h1r0ku.controller;
 import h1r0ku.dto.request.ProductRequest;
 import h1r0ku.dto.catalog.product.ProductResponse;
 import h1r0ku.mapper.ProductMapper;
+import h1r0ku.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     private final ProductMapper productMapper;
+    private final ProductService productService;
 
     @GetMapping
     @Operation(summary = "Get a paginated list of products", description = "Returns a paginated list of all products")
@@ -54,6 +56,17 @@ public class ProductController {
     public ResponseEntity<ProductResponse> createProduct(@Valid @ModelAttribute ProductRequest productRequest) {
         return ResponseEntity.ok(productMapper.createProduct(productRequest));
     }
+
+    @Operation(summary = "Update orders count in product", description = "Update orders count in product by product ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully updated orders count"),
+            @ApiResponse(responseCode = "500", description = "Internal server error occurred")
+    })
+    @PutMapping("/{productId}/orders/count/{increase}")
+    public void updateOrderCount(@PathVariable("productId") Long productId, @PathVariable("increase") boolean increase) {
+        productService.updateOrderCount(productId, increase);
+    }
+
 
     @PutMapping(value = "/{productId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "Update product", description = "Update a product by its ID")

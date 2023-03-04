@@ -7,7 +7,9 @@ import h1r0ku.feign.CustomerClient;
 import h1r0ku.repository.ReviewRepository;
 import h1r0ku.service.ProductService;
 import h1r0ku.service.ReviewService;
+import h1r0ku.utils.UpdatingUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,16 +26,17 @@ public class ReviewServiceImpl implements ReviewService {
     public Review create(Long productId, Review review) {
         customerClient.getById(review.getCustomerId()); // If customer doesn't exist feign will throw an exception
         Product product = productService.getById(productId);
+        int sum = product.getReviews().stream().mapToInt(Review::getRating).sum() + review.getRating();
+        product.setAverageStar((float)Math.round((double) sum / product.getReviews().size()));
         review.setProduct(product);
+        productService.update(product);
         return reviewRepository.save(review);
     }
 
     @Override
     public Review update(Long reviewId, Long productId, Review review) {
         Review oldReview = getById(reviewId);
-        oldReview.setText(review.getText());
-        oldReview.setRating(review.getRating());
-        oldReview.setCustomerId(review.getCustomerId());
+        BeanUtils.copyProperties(review, oldReview, UpdatingUtil.getNullPropertyNames(review));
         return create(productId, oldReview);
     }
 

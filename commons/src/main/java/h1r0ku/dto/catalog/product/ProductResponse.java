@@ -18,6 +18,8 @@ public class ProductResponse {
     @JsonIgnoreProperties("products")
     private CategoryResponse category;
     private List<ProductImageResponse> images;
+    private Float averageStar;
+    private Integer ordersCount;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

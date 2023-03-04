@@ -29,10 +29,10 @@ public class Product {
     private String description;
 
     @Column(name = "price")
-    private BigDecimal price;
+    private BigDecimal price = BigDecimal.valueOf(0);
 
     @Column(name = "quantity")
-    private Integer quantity;
+    private Integer quantity = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
@@ -44,13 +44,10 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<ProductImage> images;
     @Column(name = "average_start")
-    private Float averageStar;
-
-    @Column(name = "reviews_count")
-    private Integer reviewsCount;
+    private Float averageStar = 0.0f;
 
     @Column(name = "orders_count")
-    private Integer ordersCount;
+    private Integer ordersCount = 0;
 
     @CreationTimestamp
     @Column(name = "createdAt")

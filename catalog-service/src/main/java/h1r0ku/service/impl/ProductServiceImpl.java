@@ -9,7 +9,10 @@ import h1r0ku.repository.ProductImageRepository;
 import h1r0ku.repository.ProductRepository;
 import h1r0ku.service.CategoryService;
 import h1r0ku.service.ProductService;
+import h1r0ku.utils.UpdatingUtil;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -31,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
 
     private static double calculatePopularityScore(Product product) {
         Float avgRating = product.getAverageStar();
-        Integer numReviews = product.getReviewsCount();
+        Integer numReviews = product.getReviews().size();
 
         double score = (MIN_REVIEWS / (MIN_REVIEWS + (float)numReviews)) * avgRating
                 + (numReviews / (MIN_REVIEWS + (float)numReviews)) * NORMALIZATION_FACTOR;
@@ -65,14 +68,22 @@ public class ProductServiceImpl implements ProductService {
         Category oldCategory = p.getCategory();
         oldCategory.removeChild(productId);
 
-        p.setProductName(product.getProductName());
-        p.setPrice(product.getPrice());
-        p.setDescription(product.getDescription());
-        p.setQuantity(product.getQuantity());
+        BeanUtils.copyProperties(product, p, UpdatingUtil.getNullPropertyNames(p));
         p.setCategory(category);
 
         categoryService.updateCategory(oldCategory.getId(), oldCategory.getParentCategory().getId(), oldCategory);
         return productRepository.save(p);
+    }
+
+    @Override
+    public Product update(Product product) {
+        return productRepository.save(product);
+    }
+
+    @Override
+    @Transactional
+    public void updateOrderCount(Long productId, boolean increase) {
+        productRepository.updateOrderCount(productId, increase);
     }
 
     @Override
