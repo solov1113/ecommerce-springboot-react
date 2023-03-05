@@ -22,18 +22,17 @@ public class CartItem {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "product_id")
+    @Column(name = "product_id", nullable = false)
     private Long productId;
 
-    @Column(name = "quantity")
-    private Integer quantity;
+    @Column(name = "quantity", columnDefinition="Integer default 0", nullable = false)
+    private Integer quantity = 0;
 
-    @Column(name = "price")
-    @ColumnDefault("0")
-    private BigDecimal price;
+    @Column(name = "price", columnDefinition="Decimal(10,2) default '0.00'", nullable = false)
+    private BigDecimal price = BigDecimal.valueOf(0);
 
     @ManyToOne
-    @JoinColumn(name = "cart_id")
+    @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
 
     @CreationTimestamp

@@ -5,15 +5,17 @@ import lombok.Data;
 
 @Data
 public class ReviewRequest {
-    private Long id;
-    @NotNull(message = "CustomerId value couldn't be")
+    @NotNull(message = "Customer ID is required")
     private Long customerId;
+
+    @Size(min = 10, max = 150, message = "Product name must be between 1 and 150 characters")
     private String text;
-    @NotNull(message = "CustomerId value couldn't be")
+
+    @NotNull(message = "Product ID is required")
     private Long productId;
-    @Positive
-    @Min(value = 1)
-    @Max(value = 5)
-    @NotNull
+
+    @Min(value = 1, message = "Rating must be greater than or equal to 1")
+    @Max(value = 5, message = "Rating must be less than or equal to 5")
+    @NotNull(message = "Rating is required")
     private Short rating;
 }

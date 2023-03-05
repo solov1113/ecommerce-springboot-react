@@ -22,13 +22,14 @@ public class Customer {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username")
+    @Column(name = "username", nullable = false)
     private String username;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "role", columnDefinition = "VARCHAR(10) default 'USER'", nullable = false)
     private CustomerRole role = CustomerRole.USER;
 
     @Column(name = "first_name")

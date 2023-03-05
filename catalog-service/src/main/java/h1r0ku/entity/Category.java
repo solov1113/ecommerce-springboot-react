@@ -24,14 +24,14 @@ public class Category {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "level")
+    @Column(name = "level", nullable = false)
     private Integer level;
 
     @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Category> childCategories = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
+    @JoinColumn(name = "parent_id", columnDefinition = "integer default null")
     private Category parentCategory = null;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

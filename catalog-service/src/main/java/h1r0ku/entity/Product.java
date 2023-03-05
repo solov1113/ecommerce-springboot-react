@@ -22,31 +22,31 @@ public class Product {
     @Column(name = "id")
     private Long id;
 
-    @Column (name = "product_name")
+    @Column (name = "product_name", nullable = false)
     private String productName;
 
     @Column (name = "description")
     private String description;
 
-    @Column(name = "price")
+    @Column(name = "price", columnDefinition = "Decimal(10, 2) default '0.00'", nullable = false)
     private BigDecimal price = BigDecimal.valueOf(0);
 
-    @Column(name = "quantity")
+    @Column(name = "quantity", columnDefinition = "Integer default 0", nullable = false)
     private Integer quantity = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Review> reviews;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductImage> images;
-    @Column(name = "average_start")
-    private Float averageStar = 0.0f;
+    @Column(name = "average_start", columnDefinition = "Real(3,2) default '0.00", nullable = false)
+    private Float averageStar = 0.00f;
 
-    @Column(name = "orders_count")
+    @Column(name = "orders_count", columnDefinition = "Integer default 0", nullable = false)
     private Integer ordersCount = 0;
 
     @CreationTimestamp

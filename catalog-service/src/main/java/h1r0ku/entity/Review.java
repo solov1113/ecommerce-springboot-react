@@ -20,17 +20,17 @@ public class Review {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "customer_id")
+    @Column(name = "customer_id", nullable = false)
     private Long customerId;
 
     @Column(name = "text")
     private String text;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @Column(name = "rating")
+    @Column(name = "rating", nullable = false)
     private Short rating;
 
     @CreationTimestamp
