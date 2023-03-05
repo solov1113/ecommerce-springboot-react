@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 @Component
 @RequiredArgsConstructor
@@ -18,7 +19,11 @@ public class CustomerMapper {
 
     public CustomerResponse registration(CustomerRequest customerRequest) {
         Customer customer = basicMapper.convertTo(customerRequest, Customer.class);
-        return basicMapper.convertTo(customerService.registration(customer, customerRequest.getImage()), CustomerResponse.class);
+        return basicMapper.convertTo(customerService.registration(customer), CustomerResponse.class);
+    }
+
+    public CustomerResponse uploadImage(MultipartFile image, Long customerId) {
+        return basicMapper.convertTo(customerService.uploadImage(image, customerId), CustomerResponse.class);
     }
 
     public Page<CustomerResponse> getAll(Pageable pageable) {

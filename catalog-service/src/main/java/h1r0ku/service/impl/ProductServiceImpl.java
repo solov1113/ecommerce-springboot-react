@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,34 +35,31 @@ public class ProductServiceImpl implements ProductService {
 
     private static double calculatePopularityScore(Product product) {
         Float avgRating = product.getAverageStar();
-        Integer numReviews = product.getReviews().size();
+        int numReviews = product.getReviews().size();
 
-        double score = (MIN_REVIEWS / (MIN_REVIEWS + (float)numReviews)) * avgRating
+        return (MIN_REVIEWS / (MIN_REVIEWS + (float)numReviews)) * avgRating
                 + (numReviews / (MIN_REVIEWS + (float)numReviews)) * NORMALIZATION_FACTOR;
-
-        return score;
     }
 
-    private void uploadProductImage(List<MultipartFile> images, Product product) {
-        if(images.size() > 0) {
-            for(MultipartFile image : images) {
-                String fileSrc = imageClient.uploadImage(image);
-                productImageRepository.save(new ProductImage(fileSrc, product));
-            }
+    private List<ProductImage> uploadProductImage(MultipartFile[] images, Product product) {
+        List<ProductImage> productImages = new ArrayList<>();
+        for (MultipartFile image : images) {
+            String fileSrc = imageClient.uploadImage(image);
+            ProductImage productImage = productImageRepository.save(new ProductImage(fileSrc, product));
+            productImages.add(productImage);
         }
+        return productImages;
     }
 
     @Override
-    public Product create(Product product, List<MultipartFile> images, Long categoryId) {
+    public Product create(Product product, Long categoryId) {
         Category category = categoryService.getCategoryById(categoryId);
         product.setCategory(category);
-        Product saved = productRepository.save(product);
-        uploadProductImage(images, saved);
-        return saved;
+        return productRepository.save(product);
     }
 
     @Override
-    public Product update(Long productId, Product product, List<MultipartFile> images, Long categoryId) {
+    public Product update(Long productId, Product product, Long categoryId) {
         Product p = getById(productId);
 
         Category category = categoryService.getCategoryById(categoryId);
@@ -81,6 +79,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product uploadImages(MultipartFile[] images, Long productId) {
+        Product product = getById(productId);
+        product.setImages(uploadProductImage(images, product));
+        return product;
+    }
+
+    @Override
     @Transactional
     public void updateOrderCount(Long productId, boolean increase) {
         productRepository.updateOrderCount(productId, increase);
@@ -94,5 +99,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getById(Long productId) {
         return productRepository.findById(productId).orElseThrow(() -> new NotFoundException("Product not found"));
+    }
+
+    @Override
+    public void deleteProduct(Long productId) {
+        productRepository.deleteById(productId);
     }
 }
