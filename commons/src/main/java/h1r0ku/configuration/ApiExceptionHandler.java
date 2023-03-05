@@ -1,10 +1,7 @@
 package h1r0ku.configuration;
 
 import feign.FeignException;
-import h1r0ku.exceptions.CategoryLevelException;
-import h1r0ku.exceptions.NotFoundException;
-import h1r0ku.exceptions.ProductQuantityUnavailableException;
-import h1r0ku.exceptions.RestApiException;
+import h1r0ku.exceptions.*;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -47,6 +44,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ProductQuantityUnavailableException.class)
     private ResponseEntity<Object> handleProductQuantityUnavailableException(ProductQuantityUnavailableException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(AlreadyExistException.class)
+    private ResponseEntity<Object> handleAlreadyExistException(AlreadyExistException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
     @ExceptionHandler(RestApiException.class)
