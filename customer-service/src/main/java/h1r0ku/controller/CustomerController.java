@@ -15,6 +15,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,13 +28,23 @@ public class CustomerController {
     @PostMapping
     @Operation(summary = "Create a new customer", description = "Create a new customer")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Customer created"),
+            @ApiResponse(responseCode = "200", description = "Customer created"),
             @ApiResponse(responseCode = "400", description = "Invalid customer data"),
             @ApiResponse(responseCode = "409", description = "Customer already exists"),
             @ApiResponse(responseCode = "500", description = "Internal server error occurred")
     })
-    public ResponseEntity<CustomerResponse> registration(@Valid @ModelAttribute CustomerRequest customerRequest) {
+    public ResponseEntity<CustomerResponse> registration(@Valid @RequestBody CustomerRequest customerRequest) {
         return ResponseEntity.ok(customerMapper.registration(customerRequest));
+    }
+
+    @PostMapping("/{customerId}/upload")
+    @Operation(summary = "Upload a profile picture", description = "Upload a profile picture")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Picture uploaded"),
+            @ApiResponse(responseCode = "500", description = "Internal server error occurred")
+    })
+    public ResponseEntity<CustomerResponse> uploadImage(@RequestParam("image") MultipartFile image, @PathVariable("customerId") Long customerId) {
+        return ResponseEntity.ok(customerMapper.uploadImage(image, customerId));
     }
 
     @GetMapping
