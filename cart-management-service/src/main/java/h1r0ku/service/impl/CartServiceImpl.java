@@ -4,6 +4,7 @@ import h1r0ku.dto.cart.CartResponse;
 import h1r0ku.dto.catalog.product.ProductResponse;
 import h1r0ku.entity.Cart;
 import h1r0ku.entity.CartItem;
+import h1r0ku.exceptions.AlreadyExistException;
 import h1r0ku.exceptions.NotFoundException;
 import h1r0ku.feign.OrderClient;
 import h1r0ku.feign.ProductClient;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -32,7 +34,7 @@ public class CartServiceImpl implements CartService {
     public Cart create(Cart cart) {
         Cart existingCart = getByCustomerId(cart.getCustomerId());
         if(existingCart != null) {
-//            throw new AlreadyExist
+            throw new AlreadyExistException("Cart for customer already exist");
         }
         return cartRepository.save(cart);
     }
@@ -63,6 +65,7 @@ public class CartServiceImpl implements CartService {
     public Cart removeItem(Long cartId, Long itemId) {
         Cart cart = getById(cartId);
         cart.removeItem(itemId);
+        cartItemRepository.deleteById(itemId);
         return cartRepository.save(cart);
     }
 
@@ -77,8 +80,9 @@ public class CartServiceImpl implements CartService {
         Cart cart = getById(id);
         orderClient.create(basicMapper.convertTo(cart, CartResponse.class));
         //        Clear cart items
-        cartItemRepository.deleteCartItemsByCart_Id(id);
-        return cartRepository.save(cart);
+        cartItemRepository.deleteAllByCartId(id);
+        cart.setCartItems(new ArrayList<>());
+        return cart;
     }
 
     @Override

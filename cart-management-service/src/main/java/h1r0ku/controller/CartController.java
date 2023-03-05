@@ -1,7 +1,7 @@
 package h1r0ku.controller;
 
+import h1r0ku.dto.cart.CartRequest;
 import h1r0ku.dto.request.CartItemRequest;
-import h1r0ku.dto.request.CartRequest;
 import h1r0ku.dto.cart.CartResponse;
 import h1r0ku.mapper.CartMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -72,7 +72,6 @@ public class CartController {
             @ApiResponse(responseCode = "200", description = "Successfully created cart item"),
             @ApiResponse(responseCode = "500", description = "Internal server error occurred")
     })
-
     public ResponseEntity<CartResponse> createCartItem(@PathVariable("cartId") Long cartId, @Valid @RequestBody CartItemRequest cartItemRequest) {
         return ResponseEntity.ok(cartMapper.addItem(cartId, cartItemRequest));
     }
@@ -83,7 +82,6 @@ public class CartController {
             @ApiResponse(responseCode = "200", description = "Successfully deleted cart item"),
             @ApiResponse(responseCode = "500", description = "Internal server error occurred")
     })
-
     public ResponseEntity<CartResponse> deleteCartItem(@PathVariable("cartId") Long cartId, @PathVariable("itemId") Long itemId) {
         return ResponseEntity.ok(cartMapper.removeItem(cartId, itemId));
     }
