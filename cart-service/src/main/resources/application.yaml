@@ -1,5 +1,5 @@
 spring:
   application:
-    name: cart-management-service
+    name: cart-service
   config:
     import: optional:configserver:http://localhost:8081

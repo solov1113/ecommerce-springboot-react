@@ -62,7 +62,7 @@ spring:
             predicates:
               - Path=/api/v1/images/**
             uri: lb://image-service
-        -   id: cart-management-service
+        -   id: cart-service
             filters:
               - RewritePath=/api/v1/carts/v3/api-docs, /v3/api-docs
             predicates:

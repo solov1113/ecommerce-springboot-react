@@ -13,11 +13,11 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 @OpenAPIDefinition(
         servers = { @Server(url = "http://localhost:8080")},
-        info = @Info(title = "Cart Management API", version = "1.0.0", description = "API for managing cart")
+        info = @Info(title = "Cart API", version = "1.0.0", description = "API for managing cart")
 )
-public class CartManagementServiceApplication {
+public class CartServiceApplication {
     public static void main(String[] args) {
-        SpringApplication.run(CartManagementServiceApplication.class, args);
+        SpringApplication.run(CartServiceApplication.class, args);
     }
 
 }
