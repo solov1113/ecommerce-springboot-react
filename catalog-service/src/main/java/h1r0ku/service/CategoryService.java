@@ -4,6 +4,7 @@ import h1r0ku.entity.Category;
 import h1r0ku.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface CategoryService {
     Category setParentCategory(Long parentId, Category category);
     Category updateCategory(Long id, Long parentCategoryId, Category updatedCategory);
     void deleteCategory(Long id);
+    void deleteBanner(Long id);
+    Category uploadBanners(Long id, MultipartFile[] banners);
 }

@@ -19,6 +19,7 @@ public class CategoryResponse {
     private List<CategoryResponse> childCategories = new ArrayList<>();
     @JsonBackReference
     private CategoryResponse parentCategory;
+    private List<BannerResponse> banners;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

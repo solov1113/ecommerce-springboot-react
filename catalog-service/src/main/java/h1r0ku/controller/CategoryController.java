@@ -16,6 +16,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -91,6 +92,30 @@ public class CategoryController {
     })
     public ResponseEntity<Void> deleteCategory(@PathVariable("id") Long id) {
         categoryMapper.deleteCategory(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+//    Banner
+
+    @PostMapping("/{id}/banner")
+    @Operation(summary = "Upload a banners to category", description = "Upload a banners to category by its ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Banner uploaded"),
+            @ApiResponse(responseCode = "404", description = "Category not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error occurred")
+    })
+    public ResponseEntity<CategoryResponse> uploadBanners(@PathVariable("id") Long id, @RequestParam("Banners") MultipartFile[] banners) {
+        return ResponseEntity.ok(categoryMapper.uploadBanners(id, banners));
+    }
+
+    @DeleteMapping("/banner/{id}")
+    @Operation(summary = "Delete a banner by id", description = "Delete a banner by its ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Banner deleted"),
+            @ApiResponse(responseCode = "500", description = "Internal server error occurred")
+    })
+    public ResponseEntity<Void> deleteBanner(@PathVariable("id") Long id) {
+        categoryMapper.deleteBanner(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
