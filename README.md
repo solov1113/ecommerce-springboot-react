@@ -12,6 +12,7 @@ This is an ecommerce REST API built using Java and Spring Boot. The API provides
   - [auth-service](#auth-service)
   - [image-service](#image-service)
   - [customer-service](#customer-service)
+  - [cart-service](#cart-service)
 - [Technologies Used](#technologies-used)
 - [Setup](#setup)
 - [Authentication and Authorization](#authentication-and-authorization)
@@ -42,6 +43,9 @@ The `image-service` service manages the images associated with products.
 ### customer-service
 The `customer-service` service manages information about customers who have registered with the system.
 
+### cart-service
+The `cart-service` service manages customer cart
+
 ## Technologies Used
 
 The following technologies were used to build this API:
@@ -61,7 +65,7 @@ The following technologies were used to build this API:
 4. Start the Eureka server by running the `DiscoveryServerApplication.java` file in the `discovery-server` module.
 5. Start the Config Server by running the `ConfigServerApplication.java` file in the `config-server` module.
 6. Start the Api Gateway by running the `ApiGatewayApplication.java` file in the `api-gateway` module.
-7. Start the remaining modules (catalog-service, order-service, auth-service, image-service, and customer-service) by running their respective `Application.java` files.
+7. Start the remaining modules (catalog-service, order-service, auth-service, image-service, customer-service and cart-serivce) by running their respective `Application.java` files.
 
 ## Authentication and Authorization
 
