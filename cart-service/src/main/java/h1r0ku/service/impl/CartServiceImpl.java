@@ -39,25 +39,28 @@ public class CartServiceImpl implements CartService {
         return cartRepository.save(cart);
     }
 
+    private BigDecimal calculatePrice(BigDecimal price, int quantity) {
+        return price.multiply(BigDecimal.valueOf(quantity));
+    }
+
     @Override
     public Cart addItem(Long cartId, CartItem cartItem) {
         Cart cart = getById(cartId);
         ProductResponse productResponse = productClient.getProductById(cartItem.getProductId()).getBody();
         Optional<CartItem> existingItem = cart.getCartItems().stream()
-                .filter(i -> i.getProductId().equals(cartItem.getProductId()))
+                .filter(cartItem::equals)
                 .findFirst();
-        if(existingItem.isPresent()) {
-            CartItem item = existingItem.get();
+        existingItem.ifPresent(item -> {
             item.setQuantity(item.getQuantity() + cartItem.getQuantity());
-            item.addPrice(productResponse.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
+            item.addPrice(calculatePrice(productResponse.getPrice(), cartItem.getQuantity()));
             cartItemRepository.save(item);
-        } else {
+        });
+        existingItem.orElseGet(() -> {
             cart.addItem(cartItem);
             cartItem.setCart(cart);
-            cartItem.addPrice(productResponse.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
-            cartItemRepository.save(cartItem);
-        }
-
+            cartItem.setPrice(calculatePrice(productResponse.getPrice(), cartItem.getQuantity()));
+            return cartItemRepository.save(cartItem);
+        });
         return cartRepository.save(cart);
     }
 
