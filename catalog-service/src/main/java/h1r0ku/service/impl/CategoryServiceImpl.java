@@ -87,7 +87,7 @@ public class CategoryServiceImpl implements CategoryService {
         bannerRepository.deleteById(id);
     }
 
-    private List<Banner> uploadBanners(Category category, MultipartFile[] banners) {
+    private List<Banner> uploadAndReturnBanners(Category category, MultipartFile[] banners) {
         List<Banner> bannerList = new ArrayList<>();
         for (MultipartFile banner : banners) {
             String fileSrc = imageClient.uploadImage(banner);
@@ -106,7 +106,7 @@ public class CategoryServiceImpl implements CategoryService {
         if(category.getBanners().size() >= 3) {
             throw new IllegalArgumentException("A category can have only 3 banners");
         }
-        List<Banner> uploadedBanners = uploadBanners(category, banners);
+        List<Banner> uploadedBanners = uploadAndReturnBanners(category, banners);
         category.setBanners(uploadedBanners);
         return category;
     }
