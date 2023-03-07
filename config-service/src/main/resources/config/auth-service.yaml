@@ -13,3 +13,4 @@ spring:
 jwt:
   secret:
     key: bxcxvcvxNsapkdvopasjvdpsakvd7GNnbgdsfgV5Dfvdsavdasjzvcxvcx90kFDS
+  expiration: 900

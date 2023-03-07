@@ -24,6 +24,9 @@ public class JwtServiceImpl implements JwtService {
     @Value("${jwt.secret.key}")
     private String SECRET_KEY;
 
+    @Value(value = "${jwt.expiration}")
+    private Long VALIDITY_IN_SECONDS;
+
     @Override
     public String extractUsername(String token) {
         return extractClaims(token, Claims::getSubject);
@@ -60,7 +63,6 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String generateToken(UserDetails userDetails) {
-        System.out.println(userDetails.toString());
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, userDetails.getUsername());
     }
@@ -70,7 +72,7 @@ public class JwtServiceImpl implements JwtService {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .setExpiration(new Date(System.currentTimeMillis() + VALIDITY_IN_SECONDS))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
