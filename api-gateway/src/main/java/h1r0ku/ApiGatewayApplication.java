@@ -1,5 +1,7 @@
 package h1r0ku;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +17,9 @@ import java.util.List;
 @SpringBootApplication
 @EnableDiscoveryClient
 public class ApiGatewayApplication {
+
+    private static final Logger logger = LogManager.getLogger(ApiGatewayApplication.class);
+
     public static void main(String[] args) {
         SpringApplication.run(ApiGatewayApplication.class, args);
     }
@@ -25,7 +30,7 @@ public class ApiGatewayApplication {
         List<GroupedOpenApi> groups = new ArrayList<>();
         List<RouteDefinition> definitions = locator.getRouteDefinitions().collectList().block();
         for (RouteDefinition definition : definitions) {
-            System.out.println("id: " + definition.getId() + "  " + definition.getUri().toString());
+            logger.info("id: " + definition.getId() + "  " + definition.getUri().toString());
         }
         definitions.stream().filter(routeDefinition -> routeDefinition.getId().matches(".*-service")).forEach(routeDefinition -> {
             String name = routeDefinition.getId().replaceAll("-service", "");
