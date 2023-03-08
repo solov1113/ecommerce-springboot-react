@@ -7,6 +7,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "customer")
@@ -40,6 +42,12 @@ public class Customer {
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<Wishlist> wishlist = new ArrayList<>();
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<ShippingAddress> shippingAddresses = new ArrayList<>();
 
     @CreationTimestamp
     @Column(name = "createdAt")
