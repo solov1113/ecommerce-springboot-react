@@ -14,11 +14,14 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -33,12 +36,20 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryService categoryService;
     private final ImageClient imageClient;
 
-    private static double calculatePopularityScore(Product product) {
+    private static Float calculatePopularityScore(Product product) {
         Float avgRating = product.getAverageStar();
         int numReviews = product.getReviews().size();
 
         return (MIN_REVIEWS / (MIN_REVIEWS + (float)numReviews)) * avgRating
                 + (numReviews / (MIN_REVIEWS + (float)numReviews)) * NORMALIZATION_FACTOR;
+    }
+
+    private Comparator<Product> getProductComparator() {
+        return (p1, p2) -> {
+            Float p1Score = calculatePopularityScore(p1);
+            Float p2Score = calculatePopularityScore(p2);
+            return p2Score.compareTo(p1Score);
+        };
     }
 
     private List<ProductImage> uploadProductImage(MultipartFile[] images, Product product) {
@@ -93,6 +104,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> getAll(Pageable pageable) {
+        Sort sort = pageable.getSort();
+        if(sort.iterator().next().getProperty().equals("popularity")) {
+            List<Product> products = productRepository.findAll(pageable).stream()
+                    .sorted(getProductComparator())
+                    .toList();
+            return new PageImpl<>(products, pageable, products.size());
+        }
         return productRepository.findAll(pageable);
     }
 
