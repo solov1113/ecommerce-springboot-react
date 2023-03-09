@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -39,10 +40,10 @@ public class Product {
     private Category category;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-    private List<Review> reviews;
+    private List<Review> reviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<ProductImage> images;
+    private List<ProductImage> images = new ArrayList<>();
     @Column(name = "average_start", columnDefinition = "Real(3,2) default '0.00", nullable = false)
     private Float averageStar = 0.00f;
 
