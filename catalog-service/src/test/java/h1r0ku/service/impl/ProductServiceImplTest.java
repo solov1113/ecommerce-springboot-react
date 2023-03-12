@@ -87,8 +87,6 @@ class ProductServiceImplTest {
         existingProduct.setProductName("Product");
         existingProduct.setDescription("Product description");
         existingProduct.setCategory(oldCategory);
-        products.add(existingProduct);
-
 
         Product updatedProduct = new Product();
         updatedProduct.setProductName("Updated product");
@@ -99,14 +97,13 @@ class ProductServiceImplTest {
 
         when(productRepository.findById(productId)).thenReturn(java.util.Optional.of(existingProduct));
         when(categoryService.getCategoryById(categoryId)).thenReturn(category);
-        when(categoryService.getCategoryById(oldCategory.getId())).thenReturn(oldCategory);
         when(productRepository.save(any(Product.class))).thenReturn(updatedProduct);
 
         // When
         Product result = serviceTest.update(productId, updatedProduct, categoryId);
 
         // Then
-        assertEquals(updatedProduct.getProductName(), result.getDescription());
+        assertEquals(updatedProduct.getProductName(), result.getProductName());
         assertEquals(updatedProduct.getDescription(), result.getDescription());
         assertEquals(category, result.getCategory());
     }
@@ -172,13 +169,12 @@ class ProductServiceImplTest {
     public void updateOrderCount_shouldUpdateOrderCount() {
         // Given
         Long productId = 1L;
-        when(productRepository.findById(productId)).thenReturn(java.util.Optional.of(new Product()));
 
         // When
         serviceTest.updateOrderCount(productId, true);
 
         // Then
-        // verify that productRepository.updateOrderCount was called with productId and true
+        verify(productRepository).updateOrderCount(productId, true);
     }
 
     private static Float calculatePopularityScore(Product product) {
@@ -201,17 +197,15 @@ class ProductServiceImplTest {
             Float p2Score = calculatePopularityScore(p2);
             return p2Score.compareTo(p1Score);
         };
-
-        when(productRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(products));
         List<Product> sortedProducts = products.stream().sorted(comparator).toList();
-        when(productRepository.findAll(any(Pageable.class)).stream().sorted(comparator)).thenReturn(sortedProducts.stream());
+        when(productRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(sortedProducts));
         Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Order.desc("popularity")));
 
         // When
         Page<Product> result = serviceTest.getAll(pageable);
 
         // Then
-        assertEquals(result.getContent(), products);
+        assertEquals(result.getContent(), sortedProducts);
     }
 
     @Test
@@ -223,10 +217,15 @@ class ProductServiceImplTest {
         when(productRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(products));
 
         // When
-        Page<Product> result = serviceTest.getAll(Pageable.unpaged());
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Product> result = serviceTest.getAll(pageable);
 
         // Then
         assertEquals(result.getContent(), products);
+
+        // Also check that the sort object is empty
+        Sort sort = result.getSort();
+        assertTrue(sort.isEmpty());
     }
 
     @Test

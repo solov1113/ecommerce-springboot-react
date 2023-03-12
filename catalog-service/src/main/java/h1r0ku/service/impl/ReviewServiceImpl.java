@@ -14,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
@@ -26,9 +28,13 @@ public class ReviewServiceImpl implements ReviewService {
     public Review create(Long productId, Review review) {
         customerClient.getById(review.getCustomerId()); // If customer doesn't exist feign will throw an exception
         Product product = productService.getById(productId);
-        int sum = product.getReviews().stream().mapToInt(Review::getRating).sum() + review.getRating();
-        product.setAverageStar((float)Math.round((double) sum / product.getReviews().size()));
-        review.setProduct(product);
+        List<Review> reviews = product.getReviews();
+        reviews.add(review);
+
+        int sum = reviews.stream().mapToInt(Review::getRating).sum();
+        float average = (float) sum / (float) reviews.size();
+
+        product.setAverageStar(average);
         productService.update(product);
         return reviewRepository.save(review);
     }
