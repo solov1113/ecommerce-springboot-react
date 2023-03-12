@@ -53,15 +53,18 @@ class ReviewServiceImplTest {
         Long customerId = 2L;
         Product product = new Product();
         product.setId(productId);
+
         List<Review> reviews = new ArrayList<>();
         Review existingReview = new Review();
         existingReview.setRating((short) 4);
         existingReview.setProduct(product);
         reviews.add(existingReview);
         product.setReviews(reviews);
+
         Review review = new Review();
         review.setCustomerId(customerId);
         review.setRating((short) 5);
+
         when(productService.getById(productId)).thenReturn(product);
         when(customerClient.getById(customerId)).thenReturn(ResponseEntity.ok(new Object()));
         when(reviewRepository.save(any(Review.class))).thenReturn(review);
@@ -72,9 +75,12 @@ class ReviewServiceImplTest {
         // Then
         verify(customerClient, times(1)).getById(customerId);
         verify(productService, times(1)).getById(productId);
+        verify(productService, times(1)).update(product);
         verify(reviewRepository, times(1)).save(any(Review.class));
+
         assertEquals(result, review);
         assertEquals(product.getAverageStar(), 4.5f);
+        assertTrue(product.getReviews().contains(review));
     }
 
     @Test

@@ -74,13 +74,13 @@ public class ProductServiceImpl implements ProductService {
         Product p = getById(productId);
 
         Category category = categoryService.getCategoryById(categoryId);
+
         Category oldCategory = p.getCategory();
         oldCategory.removeChild(productId);
 
         BeanUtils.copyProperties(product, p, UpdatingUtil.getNullPropertyNames(p));
         p.setCategory(category);
 
-        categoryService.updateCategory(oldCategory.getId(), oldCategory.getParentCategory().getId(), oldCategory);
         return productRepository.save(p);
     }
 
@@ -105,7 +105,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> getAll(Pageable pageable) {
         Sort sort = pageable.getSort();
-        if(sort.iterator().next().getProperty().equals("popularity")) {
+        if(!sort.isEmpty() &&
+           sort.iterator().next().getProperty().equals("popularity")
+        ) {
             List<Product> products = productRepository.findAll(pageable).stream()
                     .sorted(getProductComparator())
                     .toList();

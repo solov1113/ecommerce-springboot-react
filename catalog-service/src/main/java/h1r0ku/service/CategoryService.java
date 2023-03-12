@@ -15,6 +15,7 @@ public interface CategoryService {
     Page<Product> getProductsByCategory(Long categoryId, Pageable pageable);
     Category setParentCategory(Long parentId, Category category);
     Category updateCategory(Long id, Long parentCategoryId, Category updatedCategory);
+    Category updateCategory(Long id, Category updatedCategory);
     void deleteCategory(Long id);
     void deleteBanner(Long id);
     Category uploadBanners(Long id, MultipartFile[] banners);

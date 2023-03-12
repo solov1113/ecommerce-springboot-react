@@ -39,7 +39,13 @@ public class CategoryMapper {
     }
 
     public CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest) {
-        Category category = categoryService.updateCategory(id, categoryRequest.getParentCategoryId(), basicMapper.convertTo(categoryRequest, Category.class));
+
+        Category category = null;
+        if(categoryRequest.getParentCategoryId() != null) {
+            category = categoryService.updateCategory(id, categoryRequest.getParentCategoryId(), basicMapper.convertTo(categoryRequest, Category.class));
+        } else {
+            category = categoryService.updateCategory(id, basicMapper.convertTo(categoryRequest, Category.class));
+        }
         return basicMapper.convertTo(category, CategoryResponse.class);
     }
 

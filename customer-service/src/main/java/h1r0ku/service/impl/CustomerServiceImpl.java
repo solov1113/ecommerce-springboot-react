@@ -21,8 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
-    private final ImageClient imageClient;
     private final CustomerRepository customerRepository;
+    private final ImageClient imageClient;
     private final AuthClient authClient;
     private final CartClient cartClient;
 

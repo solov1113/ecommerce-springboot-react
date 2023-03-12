@@ -64,16 +64,27 @@ public class CategoryServiceImpl implements CategoryService {
         return category;
     }
 
-    @Override
-    public Category updateCategory(Long id, Long parentCategoryId, Category updatedCategory) {
+    private Category update(Long id, Category updatedCategory) {
         Category category = getCategoryById(id);
         category.setName(updatedCategory.getName());
+        return category;
+    }
+
+    @Override
+    public Category updateCategory(Long id, Long parentCategoryId, Category updatedCategory) {
+        Category category = update(id, updatedCategory);
         setParentCategory(parentCategoryId, category);
 
 //      Remove child from old parent category
         Category oldParent = category.getParentCategory().removeChild(category.getId());
         categoryRepository.save(oldParent);
 
+        return categoryRepository.save(category);
+    }
+
+    @Override
+    public Category updateCategory(Long id, Category updatedCategory) {
+        Category category = update(id, updatedCategory);
         return categoryRepository.save(category);
     }
 
